@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import com.spring.sonu.Microservice.constants.HttpStatusMessageConstants;
 import com.spring.sonu.Microservice.exception.ExceptionResponse;
 import com.spring.sonu.Microservice.model.UserDetails;
 import com.spring.sonu.Microservice.response.UserManagementResponse;
+import com.spring.sonu.Microservice.service.ConsumerManagementService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +34,9 @@ import io.swagger.annotations.ApiResponses;
 public class ConsumerManagementController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerManagementController.class);
+	
+	@Autowired
+	private ConsumerManagementService consumerManagementService;
 
 	@ApiOperation(value = "Save User Info")
 	@ApiResponses(value = {
@@ -44,6 +49,12 @@ public class ConsumerManagementController {
 	private ResponseEntity<String> saveUserInfo(@RequestParam String fileType,
 			@Valid @RequestBody UserDetails userDetails, @RequestHeader HttpHeaders headers, HttpServletRequest reuest)
 			throws Exception {
+		
+		LOGGER.info("User Info Save Process Initiated");
+		
+		String json = consumerManagementService.getJSONString(userDetails);
+		
+
 		return null;
 
 	}

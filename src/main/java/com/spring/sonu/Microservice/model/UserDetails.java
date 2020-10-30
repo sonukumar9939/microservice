@@ -1,7 +1,6 @@
 package com.spring.sonu.Microservice.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,8 +17,8 @@ public class UserDetails {
 	@ApiModelProperty(position = 1,required = true, dataType = "String",example = "Sonu", value = "User Name")
 	private String name;
 	@NotNull
-	@ApiModelProperty(position = 2,required = true, dataType = "Date",example = "20-08-2020", value = "User Date Of Birth")
-	private Date dob;
+	@ApiModelProperty(position = 2,required = true, dataType = "String",example = "20-08-2020", value = "User Date Of Birth")
+	private String dob;
 	@NotNull
 	@ApiModelProperty(position = 3,required = true, dataType = "Decimal",example = "122111241.150", value = "User Salary")
 	private BigDecimal salary;
