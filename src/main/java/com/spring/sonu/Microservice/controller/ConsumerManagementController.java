@@ -3,9 +3,11 @@ package com.spring.sonu.Microservice.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.sonu.Microservice.constants.CommonConstants;
 import com.spring.sonu.Microservice.constants.HttpStatusMessageConstants;
+import com.spring.sonu.Microservice.constants.OperationType;
 import com.spring.sonu.Microservice.exception.ExceptionResponse;
 import com.spring.sonu.Microservice.model.UserDetails;
 import com.spring.sonu.Microservice.response.UserManagementResponse;
@@ -35,6 +38,14 @@ public class ConsumerManagementController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerManagementController.class);
 	
+	private static final String USER_INFO_SAVE_API = "/spring/smartapp/user/save";
+	
+	@Value("${user.api.client.secret.key}")
+	private String apiClientSecretKey;
+
+	@Value("${user.api.alogorithm.key}")
+	private String apiAlgorithmKey;
+	
 	@Autowired
 	private ConsumerManagementService consumerManagementService;
 
@@ -47,16 +58,20 @@ public class ConsumerManagementController {
 	})
 	@RequestMapping(method = RequestMethod.POST, value = "/userInfo/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<String> saveUserInfo(@RequestParam String fileType,
-			@Valid @RequestBody UserDetails userDetails, @RequestHeader HttpHeaders headers, HttpServletRequest reuest)
+			@Valid @RequestBody UserDetails userDetails, @RequestHeader HttpHeaders headers, HttpServletRequest request)
 			throws Exception {
-		
+
 		LOGGER.info("User Info Save Process Initiated");
-		
 		String json = consumerManagementService.getJSONString(userDetails);
-		
-
-		return null;
-
+		JSONObject encryptedPayload = consumerManagementService.encryptPayload(json, this.apiClientSecretKey,this.apiAlgorithmKey);
+		ResponseEntity<String> response = consumerManagementService.invokeUserInfoApi(this.apiClientSecretKey,
+				this.apiAlgorithmKey, request, encryptedPayload.getString(CommonConstants.ENCRYPTED_DATA),
+				USER_INFO_SAVE_API, OperationType.POST.toString(),fileType);
+		// String decryptedData =
+		// consumerManagementService.decryptPayload(encryptredData,this.apiClientSecretKey,this.apiAlgorithmKey);
+		// String decryptedData ="";
+		// return new ResponseEntity<String>(decryptedData,HttpStatus.OK);
+		return response;
 	}
 
 }

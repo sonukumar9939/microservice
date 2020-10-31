@@ -7,5 +7,5 @@ import lombok.Data;
 public class UserManagementResponse {
 
 	@ApiModelProperty(position = 1, dataType = "String",required = true)
-	private String status ="In-Progress";
+	private String status ="success";
 }

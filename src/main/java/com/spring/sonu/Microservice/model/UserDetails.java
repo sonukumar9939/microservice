@@ -16,7 +16,7 @@ public class UserDetails {
 	@NotBlank
 	@ApiModelProperty(position = 1,required = true, dataType = "String",example = "Sonu", value = "User Name")
 	private String name;
-	@NotNull
+	@NotBlank
 	@ApiModelProperty(position = 2,required = true, dataType = "String",example = "20-08-2020", value = "User Date Of Birth")
 	private String dob;
 	@NotNull
