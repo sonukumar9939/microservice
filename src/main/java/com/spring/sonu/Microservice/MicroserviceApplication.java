@@ -11,5 +11,5 @@ public class MicroserviceApplication extends SpringBootServletInitializer {
 		SpringApplication.run(MicroserviceApplication.class, args);
 	}
 
-	System.out.println("Demo");
+	
 }
